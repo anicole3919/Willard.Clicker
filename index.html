@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Willard Clicker</title>
+
+  <!-- Prevent zooming on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    body {
+      background-color: #001f4d; /* dark blue */
+      color: #3399ff; /* bright blue text */
+      font-family: Geneva, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    h1 {
+      font-size: 4rem;
+      /* Removed blink animation to stop flashing */
+      margin: 0;
+      user-select: none;
+    }
+
+    #counter {
+      font-size: 2rem;
+      margin-top: 10px;
+      user-select: none;
+    }
+
+    img {
+      margin-top: 20px;
+      width: 300px;
+      max-width: 80%;
+      border: 4px solid #3399ff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #3399ff;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="output">Click the Willard</h1>
+  <div id="counter">Willard Count: 0</div>
+
+  <!-- Willard image -->
+  <img 
+    id="willardImg" 
+    src="https://drive.google.com/uc?export=view&id=1_C4_oAAs94DS_o8bnRC92Dgc85eiHxqf" 
+    alt="Willard" 
+    onclick="sayWillard()" 
+    draggable="false"
+  />
+
+  <!-- Willard Sound -->
+  <audio id="willardSound" src="https://www.soundjay.com/human/sounds/scream-01.mp3"></audio>
+
+  <script>
+    let count = 0;
+
+    const imageUrls = [
+      "https://drive.google.com/uc?export=view&id=1_C4_oAAs94DS_o8bnRC92Dgc85eiHxqf",
+      "https://upload.wikimedia.org/wikipedia/en/f/f1/Willard_movie_poster.jpg",
+      "https://m.media-amazon.com/images/M/MV5BMTYxMzYyMjQ2OF5BMl5BanBnXkFtZTYwMzA2MjY3._V1_.jpg",
+      "https://m.media-amazon.com/images/I/51HKH3TV6ML._AC_.jpg",
+      "https://m.media-amazon.com/images/I/61jUu8SPG8L._AC_UF894,1000_QL80_.jpg"
+    ];
+
+    function sayWillard() {
+      count++;
+      const output = document.getElementById('output');
+      const counter = document.getElementById('counter');
+      const audio = document.getElementById("willardSound");
+      const img = document.getElementById("willardImg");
+
+      // Immediately reset the word display to "WILLARD"
+      output.textContent = "WILLARD";
+      counter.textContent = `Willard Count: ${count}`;
+
+      // Stop any ongoing speech & sound to prevent overlaps (for rapid clicking)
+      speechSynthesis.cancel();
+      audio.pause();
+      audio.currentTime = 0;
+
+      // Speak "Willard" immediately
+      const utterance = new SpeechSynthesisUtterance("Willard");
+      speechSynthesis.speak(utterance);
+
+      // Play sound immediately
+      audio.play();
+
+      // Change image randomly
+      const newIndex = Math.floor(Math.random() * imageUrls.length);
+      img.src = imageUrls[newIndex];
+    }
+  </script>
+
+</body>
+</html>
+
